@@ -1,17 +1,17 @@
 
 # Create a VPC
-resource "aws_vpc" "vpc" {
+resource "aws_vpc" "jhc_api_vpc" {
   cidr_block = "172.18.0.0/16"
   instance_tenancy = "default"
   enable_dns_support = "true"
   enable_dns_hostnames = "true"
   tags = {
-    Name = "main"
+    Name = "$-vpc"
   }
 }
 
 resource "aws_subnet" "main-public-1" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.jhc_api_vpc.id
   cidr_block = "172.18.1.0/24"
   map_public_ip_on_launch = "true"
   availability_zone = "ap-northeast-2a"
@@ -21,7 +21,7 @@ resource "aws_subnet" "main-public-1" {
 }
 
 resource "aws_subnet" "main-public-2" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.jhc_api_vpc.id
   cidr_block =  "172.18.2.0/24"
   map_public_ip_on_launch = "true"
   availability_zone = "ap-northeast-2b"
@@ -31,7 +31,7 @@ resource "aws_subnet" "main-public-2" {
 }
 
 resource "aws_subnet" "main-public-3" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.jhc_api_vpc.id
   cidr_block =  "172.18.3.0/24"
   availability_zone = "ap-northeast-2c"
   tags = {
@@ -39,7 +39,7 @@ resource "aws_subnet" "main-public-3" {
   }
 }
 resource "aws_subnet" "main-public-4" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.jhc_api_vpc.id
   cidr_block = "172.18.4.0/24"
   availability_zone = "ap-northeast-2d"
   tags = {
@@ -48,14 +48,14 @@ resource "aws_subnet" "main-public-4" {
 }
 
 resource "aws_internet_gateway" "main_public_gateway" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.jhc_api_vpc.id
   tags = {
     Name = "main_internet_gateway"
   }
 }
 
 resource "aws_route_table" "main_rt" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.jhc_api_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main_public_gateway.id
